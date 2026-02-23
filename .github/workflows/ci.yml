@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check HTML files
+        run: |
+          echo "Checking HTML files..."
+          ls *.html
+
+      - name: Check CSS files
+        run: |
+          echo "Checking CSS files..."
+          ls css/
+
+      - name: Check JS files
+        run: |
+          echo "Checking JS files..."
+          ls js/
