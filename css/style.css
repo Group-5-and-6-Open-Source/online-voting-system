@@ -1,0 +1,549 @@
+/* ============================================================================
+   1. ROOT VARIABLES AND GLOBAL STYLES
+   ============================================================================ */
+
+:root {
+  --primary-color: #0d6efd;
+  --success-color: #198754;
+  --info-color: #0dcaf0;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --primary-gradient: linear-gradient(135deg, #0d6efd 0%, #0861ca 100%);
+  --transition-smooth: all 0.3s ease-in-out;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* ============================================================================
+   2. TYPOGRAPHY ENHANCEMENTS
+   ============================================================================ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+p {
+  color: #555;
+}
+
+/* ============================================================================
+   3. CARD STYLING (Candidate Cards)
+   ============================================================================ */
+
+.candidate-card {
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.candidate-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.candidate-card .card-body {
+  padding: 1.5rem;
+}
+
+.candidate-card .card-footer {
+  padding: 0;
+  padding-top: 1rem;
+}
+
+.candidate-avatar {
+  font-size: 48px;
+  line-height: 1;
+  transition: var(--transition-smooth);
+}
+
+.candidate-card:hover .candidate-avatar {
+  transform: scale(1.1);
+}
+
+/* Large avatar for confirmation modal */
+.candidate-avatar-large {
+  font-size: 72px;
+  line-height: 1;
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Vote button styling */
+.vote-btn {
+  transition: var(--transition-smooth);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.vote-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
+}
+
+.vote-btn:active {
+  transform: translateY(0);
+}
+
+/* ============================================================================
+   4. FORM STYLING
+   ============================================================================ */
+
+.form-label {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-control-lg {
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  transition: var(--transition-smooth);
+  padding: 12px 16px;
+}
+
+.form-control:focus,
+.form-control-lg:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* ============================================================================
+   5. BUTTON STYLING
+   ============================================================================ */
+
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: var(--transition-smooth);
+  border: none;
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-success {
+  background-color: var(--success-color);
+}
+
+.btn-success:hover {
+  background-color: #15753d;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(25, 135, 84, 0.4);
+}
+
+.btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================================================
+   6. NAVBAR STYLING
+   ============================================================================ */
+
+.navbar {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* ============================================================================
+   7. ALERTS AND NOTIFICATIONS
+   ============================================================================ */
+
+.alert {
+  border-radius: 8px;
+  border: none;
+  padding: 16px 20px;
+  font-weight: 500;
+}
+
+.alert-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.alert-error,
+.alert-danger {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #664d03;
+}
+
+.alert-info {
+  background-color: #cfe2ff;
+  color: #084298;
+}
+
+/* ============================================================================
+   8. CARD CONTAINERS
+   ============================================================================ */
+
+.card {
+  border-radius: 12px;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background: var(--primary-gradient) !important;
+  border-radius: 12px 12px 0 0 !important;
+  border: none !important;
+  padding: 1.5rem;
+}
+
+.card-footer {
+  border-top: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  border-radius: 0 0 12px 12px;
+}
+
+/* ============================================================================
+   9. STAT CARDS
+   ============================================================================ */
+
+.bg-primary,
+.bg-success,
+.bg-info,
+.bg-warning {
+  transition: var(--transition-smooth);
+}
+
+.card.bg-primary,
+.card.bg-success,
+.card.bg-info,
+.card.bg-warning {
+  border: none;
+  transform: scale(1);
+}
+
+.card.bg-primary:hover,
+.card.bg-success:hover,
+.card.bg-info:hover,
+.card.bg-warning:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ============================================================================
+   10. PROGRESS BARS
+   ============================================================================ */
+
+.progress {
+  border-radius: 8px;
+  background-color: #e9ecef;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: var(--primary-gradient);
+  font-weight: 600;
+  transition: width 0.6s ease;
+}
+
+/* ============================================================================
+   11. TABLE STYLING
+   ============================================================================ */
+
+.table {
+  border-collapse: collapse;
+}
+
+.table thead {
+  background-color: #f0f0f0;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: var(--transition-smooth);
+}
+
+.table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.table td {
+  vertical-align: middle;
+  padding: 1rem 0.75rem;
+}
+
+.table-responsive {
+  border-radius: 8px;
+}
+
+/* ============================================================================
+   12. BADGES AND MEDALS
+   ============================================================================ */
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================================================
+   13. MODAL STYLING
+   ============================================================================ */
+
+.modal-content {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-title {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* ============================================================================
+   14. CONTAINERS AND SPACING
+   ============================================================================ */
+
+.container {
+  max-width: 1200px;
+}
+
+.min-vh-100 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================================
+   15. UTILITY CLASSES
+   ============================================================================ */
+
+.gap-3 {
+  gap: 1rem;
+}
+
+.gap-4 {
+  gap: 1.5rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-muted {
+  color: #999 !important;
+}
+
+.fw-bold {
+  font-weight: 700 !important;
+}
+
+/* ============================================================================
+   16. RESPONSIVE DESIGN
+   ============================================================================ */
+
+/* Mobile devices (575px and down) */
+@media (max-width: 575.98px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .btn-lg {
+    padding: 0.8rem 1.5rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .candidate-avatar {
+    font-size: 36px;
+  }
+}
+
+/* Tablets (768px and up) */
+@media (min-width: 768px) {
+  .candidate-card {
+    min-height: 300px;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+/* Large screens (1200px and up) */
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+/* ============================================================================
+   17. PRINT STYLES
+   ============================================================================ */
+
+@media print {
+  .navbar,
+  .btn,
+  .form-control {
+    display: none !important;
+  }
+
+  .card {
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+}
+
+/* ============================================================================
+   18. ACCESSIBILITY IMPROVEMENTS
+   ============================================================================ */
+
+/* Focus visible styles for keyboard navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================================
+   19. DARK MODE SUPPORT (Optional)
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  .card,
+  .card-footer {
+    background-color: #2d2d2d !important;
+    color: #e0e0e0;
+  }
+
+  .table tbody tr:hover {
+    background-color: #3d3d3d;
+  }
+
+  .form-control {
+    background-color: #3d3d3d;
+    border-color: #555;
+    color: #e0e0e0;
+  }
+
+  .form-control:focus {
+    background-color: #3d3d3d;
+    color: #e0e0e0;
+    border-color: var(--primary-color);
+  }
+}
+
+/* ============================================================================
+   20. ANIMATION EFFECTS
+   ============================================================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}

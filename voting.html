@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Voting System - Vote</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-light">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-dark bg-primary sticky-top">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">🗳️ Online Voting System</span>
+        <div class="d-flex align-items-center gap-3">
+          <span class="text-white" id="voterNameDisplay"></span>
+          <button class="btn btn-outline-light btn-sm" id="logoutBtn">
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container py-4">
+      <!-- Session Check Alert -->
+      <div id="sessionWarning" class="alert alert-warning d-none" role="alert">
+        <strong>Warning!</strong> You are not logged in.
+        <a href="index.html">Click here to login</a>
+      </div>
+
+      <!-- Main Content (shown only if logged in) -->
+      <div id="mainContent" class="d-none">
+        <!-- Header Section -->
+        <div class="row mb-4">
+          <div class="col-12">
+            <h2 class="text-primary mb-2">Cast Your Vote</h2>
+            <p class="text-muted">
+              Choose a candidate below and click "Vote" to submit your choice.
+              You can only vote once.
+            </p>
+          </div>
+        </div>
+
+        <!-- Candidates Grid -->
+        <div class="row g-4" id="candidatesContainer">
+          <!-- Candidate cards will be dynamically inserted here by app.js -->
+          <div class="col-12 text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- View Results Button -->
+        <div class="row mt-4">
+          <div class="col-12 text-center">
+            <button
+              class="btn btn-outline-info btn-lg"
+              onclick="window.location.href = 'results.html'"
+            >
+              📊 View Results (without voting)
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirmation Alert -->
+        <div
+          id="voteSuccess"
+          class="alert alert-success d-none mt-4"
+          role="alert"
+        >
+          <strong>Success!</strong> Your vote has been recorded successfully.
+          <a href="results.html" class="alert-link">View the results →</a>
+        </div>
+
+        <div id="voteError" class="alert alert-danger d-none mt-4" role="alert">
+          <strong>Error!</strong> <span id="voteErrorMessage"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vote Confirmation Modal -->
+    <div
+      class="modal fade"
+      id="voteConfirmModal"
+      tabindex="-1"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title">Confirm Your Vote</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              id="cancelVoteBtn"
+            ></button>
+          </div>
+          <div class="modal-body text-center py-4">
+            <div class="candidate-avatar-large mb-3" id="confirmAvatarDisplay">
+              👤
+            </div>
+            <h6 class="mb-2">You are about to vote for:</h6>
+            <h4 class="text-primary fw-bold mb-3" id="confirmCandidateName">
+              Loading...
+            </h4>
+            <p class="text-muted mb-4" id="confirmCandidateParty">Loading...</p>
+            <div class="alert alert-info small" role="alert">
+              ⚠️ This action <strong>cannot be undone</strong>. You can only
+              vote once.
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0 gap-2">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              ← Change Your Mind
+            </button>
+            <button
+              type="button"
+              class="btn btn-success btn-lg fw-bold"
+              id="confirmVoteBtn"
+            >
+              ✓ Confirm Vote
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Main Application Script -->
+    <script src="app.js"></script>
+
+    <!-- Voting Page Specific Script -->
+    <script>
+      // Modal instance (global so we can control it from anywhere)
+      let voteConfirmModal;
+
+      // Track which candidate is being voted for
+      let pendingVoteCandidate = null;
+
+      // Check if user is logged in on page load
+      if (!VotingApp.isUserLoggedIn()) {
+        document.getElementById("sessionWarning").classList.remove("d-none");
+        document.getElementById("mainContent").classList.add("d-none");
+      } else {
+        // Display main content and populate page
+        document.getElementById("mainContent").classList.remove("d-none");
+        document.getElementById("sessionWarning").classList.add("d-none");
+
+        // Display voter name
+        const currentVoter = VotingApp.getCurrentVoter();
+        document.getElementById("voterNameDisplay").textContent =
+          `👤 ${currentVoter.name}`;
+
+        // Render candidates
+        renderCandidates();
+
+        // Initialize modal
+        voteConfirmModal = new bootstrap.Modal(
+          document.getElementById("voteConfirmModal"),
+        );
+      }
+
+      /**
+       * Renders all candidates as voting cards with direct vote buttons
+       */
+      function renderCandidates() {
+        const container = document.getElementById("candidatesContainer");
+        const candidates = VotingApp.getCandidates();
+
+        container.innerHTML = ""; // Clear loading spinner
+
+        candidates.forEach((candidate) => {
+          const candidateCard = document.createElement("div");
+          candidateCard.className = "col-md-6 col-lg-4";
+          candidateCard.innerHTML = `
+            <div class="card candidate-card h-100 shadow-sm border-0">
+              <div class="card-body text-center d-flex flex-column">
+                <div class="candidate-avatar mb-3">
+                  ${candidate.avatar}
+                </div>
+                <h5 class="card-title">${candidate.name}</h5>
+                <p class="card-text text-muted mb-2">${candidate.party}</p>
+                <p class="card-text small text-secondary flex-grow-1 mb-3">${candidate.bio}</p>
+              </div>
+              <div class="card-footer bg-transparent border-top">
+                <button class="btn btn-primary w-100 fw-bold vote-btn" 
+                        data-candidate-id="${candidate.id}"
+                        data-candidate-name="${candidate.name}"
+                        data-candidate-party="${candidate.party}"
+                        data-candidate-avatar="${candidate.avatar}">
+                  🗳️ Vote for ${candidate.name}
+                </button>
+              </div>
+            </div>
+          `;
+
+          // Add click handler to vote button
+          const voteBtn = candidateCard.querySelector(".vote-btn");
+          voteBtn.addEventListener("click", function () {
+            showConfirmationModal(candidate);
+          });
+
+          container.appendChild(candidateCard);
+        });
+      }
+
+      /**
+       * Show confirmation modal with candidate details
+       */
+      function showConfirmationModal(candidate) {
+        // Store the pending vote candidate
+        pendingVoteCandidate = candidate;
+
+        // Update modal content
+        document.getElementById("confirmAvatarDisplay").textContent =
+          candidate.avatar;
+        document.getElementById("confirmCandidateName").textContent =
+          candidate.name;
+        document.getElementById("confirmCandidateParty").textContent =
+          candidate.party;
+
+        // Show modal
+        voteConfirmModal.show();
+      }
+
+      /**
+       * Handle vote confirmation
+       */
+      document
+        .getElementById("confirmVoteBtn")
+        .addEventListener("click", function () {
+          if (!pendingVoteCandidate) {
+            showVoteError("No candidate selected");
+            return;
+          }
+
+          try {
+            // Record the vote
+            VotingApp.recordVote(pendingVoteCandidate.id);
+
+            // Hide modal
+            voteConfirmModal.hide();
+
+            // Show success message
+            showVoteSuccess();
+
+            // Disable all vote buttons
+            document.querySelectorAll(".vote-btn").forEach((btn) => {
+              btn.disabled = true;
+              btn.textContent = "✓ Already Voted";
+              btn.classList.remove("btn-primary");
+              btn.classList.add("btn-secondary");
+            });
+
+            // Redirect after delay
+            setTimeout(() => {
+              window.location.href = "results.html";
+            }, 2500);
+          } catch (error) {
+            voteConfirmModal.hide();
+            showVoteError(error.message);
+          }
+        });
+
+      /**
+       * Close modal when canceling
+       */
+      document
+        .getElementById("cancelVoteBtn")
+        .addEventListener("click", function () {
+          voteConfirmModal.hide();
+          pendingVoteCandidate = null;
+        });
+
+      /**
+       * Show vote success message
+       */
+      function showVoteSuccess() {
+        const container = document.getElementById("candidatesContainer");
+        const successDiv = document.createElement("div");
+        successDiv.className = "col-12";
+        successDiv.innerHTML = `
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <h5 class="alert-heading">✓ Vote Recorded!</h5>
+            <p class="mb-0">Thank you! Your vote for <strong>${pendingVoteCandidate.name}</strong> has been recorded successfully.</p>
+            <hr>
+            <p class="mb-0">Redirecting to results page...</p>
+          </div>
+        `;
+        container.parentElement.insertBefore(successDiv, container);
+      }
+
+      /**
+       * Shows vote error message
+       */
+      function showVoteError(message) {
+        const errorDiv = document.createElement("div");
+        errorDiv.className = "alert alert-danger alert-dismissible fade show";
+        errorDiv.setAttribute("role", "alert");
+        errorDiv.innerHTML = `
+          <strong>Error!</strong> ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document
+          .getElementById("mainContent")
+          .insertBefore(
+            errorDiv,
+            document.getElementById("mainContent").firstChild,
+          );
+      }
+
+      /**
+       * Logout handler
+       */
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", function () {
+          VotingApp.logout();
+          window.location.href = "index.html";
+        });
+    </script>
+  </body>
+</html>

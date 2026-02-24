@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,149 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <h1>Online Voting System (Demo)</h1>
+  <body class="bg-light">
+    <div
+      class="container min-vh-100 d-flex align-items-center justify-content-center"
+    >
+      <div class="row w-100">
+        <div class="col-md-6 col-lg-4 mx-auto">
+          <div class="card shadow-lg border-0">
+            <div class="card-body p-5">
+              <h1 class="card-title text-center mb-4 text-primary">
+                🗳️ Voting System
+              </h1>
+              <p class="text-center text-muted mb-4">
+                University Group Assignment
+              </p>
+
+              <!-- Login Form -->
+              <form id="loginForm">
+                <div class="mb-3">
+                  <label for="voterName" class="form-label fw-bold"
+                    >Voter Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control form-control-lg"
+                    id="voterName"
+                    placeholder="Enter your name"
+                    required
+                  />
+                  <small class="form-text text-muted"
+                    >Your name will be used to track your vote</small
+                  >
+                </div>
+
+                <div class="mb-4">
+                  <label for="voterId" class="form-label fw-bold"
+                    >Voter ID</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control form-control-lg"
+                    id="voterId"
+                    placeholder="Enter your ID (e.g., 12345)"
+                    required
+                  />
+                  <small class="form-text text-muted"
+                    >Must be a unique identifier</small
+                  >
+                </div>
+
+                <!-- Error Alert (hidden by default) -->
+                <div
+                  id="loginError"
+                  class="alert alert-danger d-none"
+                  role="alert"
+                >
+                  <strong>Error!</strong> <span id="errorMessage"></span>
+                </div>
+
+                <!-- Success Alert (hidden by default) -->
+                <div
+                  id="loginSuccess"
+                  class="alert alert-success d-none"
+                  role="alert"
+                >
+                  Login successful! Redirecting...
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-lg w-100 fw-bold"
+                >
+                  Login & Vote
+                </button>
+              </form>
+
+              <!-- Demo Info -->
+              <hr class="my-4" />
+              <div class="alert alert-info small" role="alert">
+                <strong>Demo Mode:</strong> This is a mock voting system. Use
+                any name and ID to test.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Main Application Script -->
+    <script src="app.js"></script>
+
+    <!-- Login-specific Script -->
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const voterName = document.getElementById("voterName").value.trim();
+          const voterId = document.getElementById("voterId").value.trim();
+
+          // Validate inputs
+          if (!voterName || !voterId) {
+            showLoginError("Please fill in all fields");
+            return;
+          }
+
+          if (voterId.length < 3) {
+            showLoginError("Voter ID must be at least 3 characters");
+            return;
+          }
+
+          // Check if voter has already voted
+          if (VotingApp.hasVoterVoted(voterId)) {
+            showLoginError(
+              "This Voter ID has already voted. Each ID can only vote once.",
+            );
+            return;
+          }
+
+          // Store voter session and redirect
+          VotingApp.loginVoter(voterName, voterId);
+          showLoginSuccess();
+
+          setTimeout(() => {
+            window.location.href = "voting.html";
+          }, 1500);
+        });
+
+      function showLoginError(message) {
+        const errorAlert = document.getElementById("loginError");
+        const errorMessage = document.getElementById("errorMessage");
+        errorMessage.textContent = message;
+        errorAlert.classList.remove("d-none");
+      }
+
+      function showLoginSuccess() {
+        document.getElementById("loginSuccess").classList.remove("d-none");
+        document.getElementById("loginForm").style.opacity = "0.5";
+        document.getElementById("loginForm").style.pointerEvents = "none";
+      }
+    </script>
   </body>
 </html>
