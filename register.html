@@ -1,0 +1,1150 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voter Registration | Online Voting System</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <style>
+      /* =============================================
+         ROOT VARIABLES — easy to change colors here
+         ============================================= */
+      :root {
+        --primary:   #1a3c6e;   /* deep navy blue  */
+        --accent:    #c8973a;   /* gold accent      */
+        --light-bg:  #f4f6fb;   /* page background  */
+        --card-bg:   #ffffff;
+        --text-dark: #1c2b3a;
+        --text-muted:#6b7a8d;
+        --border:    #dce3ef;
+        --success:   #198754;
+        --danger:    #dc3545;
+      }
+
+      /* =============================================
+         GLOBAL
+         ============================================= */
+      * { box-sizing: border-box; }
+
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background-color: var(--light-bg);
+        color: var(--text-dark);
+        min-height: 100vh;
+      }
+
+      /* =============================================
+         TOP NAVIGATION BAR
+         ============================================= */
+      .navbar-custom {
+        background-color: var(--primary);
+        padding: 14px 24px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      }
+
+      .navbar-custom .navbar-brand {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.4rem;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+
+      .navbar-custom .navbar-brand .brand-icon {
+        background: var(--accent);
+        color: var(--primary);
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+      }
+
+      .navbar-custom .nav-link-custom {
+        color: rgba(255,255,255,0.75);
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      .navbar-custom .nav-link-custom:hover {
+        color: #fff;
+      }
+
+      /* =============================================
+         PAGE HEADER BANNER
+         ============================================= */
+      .page-banner {
+        background: linear-gradient(135deg, var(--primary) 0%, #2a5298 100%);
+        padding: 48px 24px 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Decorative diagonal stripe in background */
+      .page-banner::before {
+        content: '';
+        position: absolute;
+        top: -40px; right: -60px;
+        width: 220px; height: 220px;
+        background: rgba(200, 151, 58, 0.12);
+        border-radius: 50%;
+      }
+
+      .page-banner::after {
+        content: '';
+        position: absolute;
+        bottom: -50px; left: -40px;
+        width: 160px; height: 160px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 50%;
+      }
+
+      .page-banner h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        color: #fff;
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .page-banner p {
+        color: rgba(255,255,255,0.75);
+        font-size: 0.95rem;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Gold underline decoration under the heading */
+      .banner-line {
+        width: 60px;
+        height: 3px;
+        background: var(--accent);
+        margin: 12px auto 16px;
+        border-radius: 4px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* =============================================
+         STEP INDICATOR  (shows progress: 1 > 2 > 3)
+         ============================================= */
+      .step-indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        padding: 32px 24px 0;
+      }
+
+      .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .step-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+      }
+
+      .step.active .step-circle {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(26,60,110,0.35);
+      }
+
+      .step.completed .step-circle {
+        background: var(--success);
+        color: #fff;
+      }
+
+      .step.inactive .step-circle {
+        background: var(--border);
+        color: var(--text-muted);
+      }
+
+      .step-label {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        font-weight: 500;
+        text-align: center;
+        max-width: 80px;
+      }
+
+      .step.active .step-label {
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      /* Connector line between steps */
+      .step-connector {
+        width: 60px;
+        height: 2px;
+        background: var(--border);
+        margin-bottom: 22px;
+        flex-shrink: 0;
+      }
+
+      .step-connector.done {
+        background: var(--success);
+      }
+
+      /* =============================================
+         MAIN FORM CARD
+         ============================================= */
+      .form-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        box-shadow: 0 4px 28px rgba(26,60,110,0.09);
+        padding: 36px 40px;
+        margin-bottom: 32px;
+        border: 1px solid var(--border);
+      }
+
+      /* Section title inside the form */
+      .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        color: var(--primary);
+        margin-bottom: 4px;
+      }
+
+      .section-subtitle {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 24px;
+      }
+
+      .section-divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 28px 0;
+      }
+
+      /* =============================================
+         FORM CONTROLS — custom styled inputs
+         ============================================= */
+      .form-label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-dark);
+        margin-bottom: 6px;
+      }
+
+      /* Small red asterisk to mark required fields */
+      .required-star {
+        color: var(--danger);
+        margin-left: 2px;
+      }
+
+      .form-control,
+      .form-select {
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        background-color: #fff;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(26,60,110,0.1);
+        outline: none;
+      }
+
+      /* When a field is invalid after user types */
+      .form-control.is-invalid,
+      .form-select.is-invalid {
+        border-color: var(--danger);
+      }
+
+      /* When a field passes validation */
+      .form-control.is-valid,
+      .form-select.is-valid {
+        border-color: var(--success);
+      }
+
+      /* Hint text below fields */
+      .form-hint {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+
+      /* Error message text */
+      .invalid-feedback {
+        font-size: 0.78rem;
+        color: var(--danger);
+      }
+
+      /* =============================================
+         GENDER RADIO CARDS  (custom radio buttons)
+         ============================================= */
+      .gender-options {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .gender-option {
+        flex: 1;
+        min-width: 90px;
+      }
+
+      /* Hide the default radio input */
+      .gender-option input[type="radio"] {
+        display: none;
+      }
+
+      /* Styled label acts as the clickable card */
+      .gender-option label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 14px 10px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        transition: all 0.2s;
+      }
+
+      .gender-option label i {
+        font-size: 1.4rem;
+      }
+
+      /* When the radio is checked, highlight the card */
+      .gender-option input[type="radio"]:checked + label {
+        border-color: var(--primary);
+        background: #eef2f9;
+        color: var(--primary);
+      }
+
+      .gender-option label:hover {
+        border-color: var(--primary);
+        background: #f5f7fc;
+      }
+
+      /* =============================================
+         ID UPLOAD AREA
+         ============================================= */
+      .upload-area {
+        border: 2px dashed var(--border);
+        border-radius: 12px;
+        padding: 28px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+      }
+
+      .upload-area:hover {
+        border-color: var(--primary);
+        background: #f5f7fc;
+      }
+
+      /* Hide the real file input and trigger it via the area */
+      .upload-area input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+      }
+
+      .upload-icon {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 8px;
+      }
+
+      .upload-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text-dark);
+      }
+
+      .upload-hint {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+
+      /* =============================================
+         TERMS CHECKBOX
+         ============================================= */
+      .terms-check .form-check-input {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--border);
+        border-radius: 4px;
+        margin-top: 2px;
+        cursor: pointer;
+      }
+
+      .terms-check .form-check-input:checked {
+        background-color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .terms-check .form-check-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        padding-left: 6px;
+      }
+
+      .terms-check a {
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .terms-check a:hover {
+        text-decoration: underline;
+      }
+
+      /* =============================================
+         BUTTONS
+         ============================================= */
+      .btn-primary-custom {
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 32px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-primary-custom:hover {
+        background: #152f58;
+        box-shadow: 0 6px 20px rgba(26,60,110,0.25);
+        transform: translateY(-1px);
+      }
+
+      .btn-primary-custom:active {
+        transform: translateY(0);
+      }
+
+      .btn-outline-custom {
+        background: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+        border-radius: 10px;
+        padding: 10px 28px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-outline-custom:hover {
+        background: var(--primary);
+        color: #fff;
+      }
+
+      /* =============================================
+         INFO ALERT BOX (top of form)
+         ============================================= */
+      .info-alert {
+        background: #eef2f9;
+        border-left: 4px solid var(--primary);
+        border-radius: 8px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 0.85rem;
+        color: var(--text-dark);
+        margin-bottom: 28px;
+      }
+
+      .info-alert i {
+        color: var(--primary);
+        font-size: 1.1rem;
+        margin-top: 1px;
+        flex-shrink: 0;
+      }
+
+      /* =============================================
+         FOOTER
+         ============================================= */
+      .page-footer {
+        background: var(--primary);
+        color: rgba(255,255,255,0.65);
+        text-align: center;
+        padding: 20px;
+        font-size: 0.8rem;
+        margin-top: 40px;
+      }
+
+      .page-footer span {
+        color: var(--accent);
+      }
+
+      /* =============================================
+         RESPONSIVE ADJUSTMENTS
+         ============================================= */
+      @media (max-width: 576px) {
+        .form-card {
+          padding: 24px 20px;
+        }
+
+        .step-connector {
+          width: 36px;
+        }
+
+        .page-banner h2 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- ================================================
+         NAVIGATION BAR
+         ================================================ -->
+    <nav class="navbar-custom d-flex justify-content-between align-items-center">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">
+          <i class="bi bi-check2-square"></i>
+        </div>
+        VoteSecure
+      </a>
+      <div class="d-flex gap-3 align-items-center">
+        <a href="index.html" class="nav-link-custom">
+          <i class="bi bi-house me-1"></i> Home
+        </a>
+        <a href="#" class="nav-link-custom">
+          <i class="bi bi-person me-1"></i> Login
+        </a>
+      </div>
+    </nav>
+
+    <!-- ================================================
+         PAGE BANNER
+         ================================================ -->
+    <div class="page-banner">
+      <h2><i class="bi bi-person-plus me-2"></i> Voter Registration</h2>
+      <div class="banner-line"></div>
+      <p>Create your account to participate in secure online elections</p>
+    </div>
+
+    <!-- ================================================
+         STEP INDICATOR  (Step 1 of 3 is active)
+         ================================================ -->
+    <div class="step-indicator">
+
+      <div class="step active">
+        <div class="step-circle">1</div>
+        <div class="step-label">Personal Info</div>
+      </div>
+
+      <div class="step-connector"></div>
+
+      <div class="step inactive">
+        <div class="step-circle">2</div>
+        <div class="step-label">Verification</div>
+      </div>
+
+      <div class="step-connector"></div>
+
+      <div class="step inactive">
+        <div class="step-circle">3</div>
+        <div class="step-label">Confirmation</div>
+      </div>
+
+    </div>
+
+    <!-- ================================================
+         MAIN CONTENT AREA
+         ================================================ -->
+    <div class="container" style="max-width: 780px; padding-top: 32px;">
+
+      <!-- INFO ALERT BOX -->
+      <div class="info-alert">
+        <i class="bi bi-info-circle-fill"></i>
+        <div>
+          <strong>All fields marked with <span style="color:var(--danger)">*</span> are required.</strong>
+          Your information is encrypted and kept confidential. It will only be used to verify your eligibility to vote.
+        </div>
+      </div>
+
+      <!-- ============================================================
+           THE REGISTRATION FORM
+           ============================================================ -->
+      <form id="registrationForm" novalidate>
+
+        <!-- --------------------------------------------------
+             SECTION 1 — PERSONAL INFORMATION
+             -------------------------------------------------- -->
+        <div class="form-card">
+          <h5 class="section-title"><i class="bi bi-person-lines-fill me-2"></i>Personal Information</h5>
+          <p class="section-subtitle">Enter your legal name and personal details exactly as they appear on your ID.</p>
+
+          <!-- First Name & Last Name — side by side on larger screens -->
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">First Name <span class="required-star">*</span></label>
+              <input
+                type="text"
+                id="firstName"
+                class="form-control"
+                placeholder="e.g. John"
+                required
+              />
+              <div class="invalid-feedback">Please enter your first name.</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Last Name <span class="required-star">*</span></label>
+              <input
+                type="text"
+                id="lastName"
+                class="form-control"
+                placeholder="e.g. Doe"
+                required
+              />
+              <div class="invalid-feedback">Please enter your last name.</div>
+            </div>
+
+            <!-- Middle Name (optional) -->
+            <div class="col-md-6">
+              <label class="form-label">Middle Name <span style="font-weight:400; color:var(--text-muted)">(Optional)</span></label>
+              <input
+                type="text"
+                id="middleName"
+                class="form-control"
+                placeholder="e.g. Michael"
+              />
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="col-md-6">
+              <label class="form-label">Date of Birth <span class="required-star">*</span></label>
+              <input
+                type="date"
+                id="dob"
+                class="form-control"
+                required
+              />
+              <div class="form-hint">You must be 18 years or older to register.</div>
+              <div class="invalid-feedback">Please enter your date of birth.</div>
+            </div>
+
+            <!-- Gender -->
+            <div class="col-12">
+              <label class="form-label">Gender <span class="required-star">*</span></label>
+              <div class="gender-options">
+                <div class="gender-option">
+                  <input type="radio" name="gender" id="genderMale" value="male" />
+                  <label for="genderMale">
+                    <i class="bi bi-gender-male"></i>
+                    Male
+                  </label>
+                </div>
+                <div class="gender-option">
+                  <input type="radio" name="gender" id="genderFemale" value="female" />
+                  <label for="genderFemale">
+                    <i class="bi bi-gender-female"></i>
+                    Female
+                  </label>
+                </div>
+                <div class="gender-option">
+                  <input type="radio" name="gender" id="genderOther" value="other" />
+                  <label for="genderOther">
+                    <i class="bi bi-person"></i>
+                    Other
+                  </label>
+                </div>
+                <div class="gender-option">
+                  <input type="radio" name="gender" id="genderPreferNot" value="prefer_not" />
+                  <label for="genderPreferNot">
+                    <i class="bi bi-dash-circle"></i>
+                    Prefer not to say
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- --------------------------------------------------
+             SECTION 2 — CONTACT INFORMATION
+             -------------------------------------------------- -->
+        <div class="form-card">
+          <h5 class="section-title"><i class="bi bi-envelope-fill me-2"></i>Contact Information</h5>
+          <p class="section-subtitle">We'll use this to send your registration confirmation and voting notifications.</p>
+
+          <div class="row g-3">
+
+            <!-- Email Address -->
+            <div class="col-md-6">
+              <label class="form-label">Email Address <span class="required-star">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text" style="border-radius:10px 0 0 10px; border:1.5px solid var(--border); background:#f4f6fb;">
+                  <i class="bi bi-envelope" style="color:var(--primary)"></i>
+                </span>
+                <input
+                  type="email"
+                  id="email"
+                  class="form-control"
+                  placeholder="john@example.com"
+                  required
+                  style="border-radius:0 10px 10px 0;"
+                />
+              </div>
+              <div class="form-hint">A verification link will be sent to this email.</div>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="col-md-6">
+              <label class="form-label">Phone Number <span class="required-star">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text" style="border-radius:10px 0 0 10px; border:1.5px solid var(--border); background:#f4f6fb;">
+                  <i class="bi bi-telephone" style="color:var(--primary)"></i>
+                </span>
+                <input
+                  type="tel"
+                  id="phone"
+                  class="form-control"
+                  placeholder="+1 (555) 000-0000"
+                  required
+                  style="border-radius:0 10px 10px 0;"
+                />
+              </div>
+            </div>
+
+            <!-- Residential Address -->
+            <div class="col-12">
+              <label class="form-label">Residential Address <span class="required-star">*</span></label>
+              <input
+                type="text"
+                id="address"
+                class="form-control"
+                placeholder="Street address, apartment, unit..."
+                required
+              />
+            </div>
+
+            <!-- City + State + Zip — three columns -->
+            <div class="col-md-5">
+              <label class="form-label">City <span class="required-star">*</span></label>
+              <input type="text" id="city" class="form-control" placeholder="City" required />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">State / Region <span class="required-star">*</span></label>
+              <input type="text" id="state" class="form-control" placeholder="State" required />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">ZIP / Postal Code</label>
+              <input type="text" id="zip" class="form-control" placeholder="00000" />
+            </div>
+
+          </div>
+        </div>
+
+        <!-- --------------------------------------------------
+             SECTION 3 — ACCOUNT CREDENTIALS
+             -------------------------------------------------- -->
+        <div class="form-card">
+          <h5 class="section-title"><i class="bi bi-lock-fill me-2"></i>Account Credentials</h5>
+          <p class="section-subtitle">Create a secure password to protect your voting account.</p>
+
+          <div class="row g-3">
+
+            <!-- Voter ID (auto-generated hint) -->
+            <div class="col-md-6">
+              <label class="form-label">Voter ID / Username <span class="required-star">*</span></label>
+              <input
+                type="text"
+                id="voterId"
+                class="form-control"
+                placeholder="Choose a unique username"
+                required
+              />
+              <div class="form-hint">This will be your unique login identifier.</div>
+            </div>
+
+            <!-- National ID / Passport Number -->
+            <div class="col-md-6">
+              <label class="form-label">National ID / Passport No. <span class="required-star">*</span></label>
+              <input
+                type="text"
+                id="nationalId"
+                class="form-control"
+                placeholder="e.g. A1234567"
+                required
+              />
+              <div class="form-hint">Used to verify your identity. Kept confidential.</div>
+            </div>
+
+            <!-- Password -->
+            <div class="col-md-6">
+              <label class="form-label">Password <span class="required-star">*</span></label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  placeholder="Create a strong password"
+                  required
+                  style="border-radius:10px 0 0 10px;"
+                />
+                <!-- Toggle password visibility button -->
+                <button
+                  type="button"
+                  class="input-group-text"
+                  onclick="togglePassword('password', this)"
+                  style="border-radius:0 10px 10px 0; border:1.5px solid var(--border); background:#f4f6fb; cursor:pointer;"
+                >
+                  <i class="bi bi-eye" style="color:var(--primary)"></i>
+                </button>
+              </div>
+
+              <!-- Password Strength Bar -->
+              <div style="margin-top: 8px;">
+                <div style="height:5px; background:var(--border); border-radius:4px; overflow:hidden;">
+                  <div id="strengthBar" style="height:100%; width:0%; transition:width 0.3s, background 0.3s; border-radius:4px;"></div>
+                </div>
+                <div id="strengthLabel" class="form-hint" style="margin-top:4px;"></div>
+              </div>
+              <div class="form-hint">Minimum 8 characters. Use a mix of letters, numbers, and symbols.</div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="col-md-6">
+              <label class="form-label">Confirm Password <span class="required-star">*</span></label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  class="form-control"
+                  placeholder="Re-enter your password"
+                  required
+                  style="border-radius:10px 0 0 10px;"
+                />
+                <button
+                  type="button"
+                  class="input-group-text"
+                  onclick="togglePassword('confirmPassword', this)"
+                  style="border-radius:0 10px 10px 0; border:1.5px solid var(--border); background:#f4f6fb; cursor:pointer;"
+                >
+                  <i class="bi bi-eye" style="color:var(--primary)"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback">Passwords do not match.</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- --------------------------------------------------
+             SECTION 4 — ID DOCUMENT UPLOAD
+             -------------------------------------------------- -->
+        <div class="form-card">
+          <h5 class="section-title"><i class="bi bi-card-image me-2"></i>ID Document Upload</h5>
+          <p class="section-subtitle">Upload a clear photo or scan of your valid government-issued ID for verification.</p>
+
+          <div class="upload-area" id="uploadArea">
+            <!-- Hidden file input — clicking anywhere on the area triggers it -->
+            <input type="file" id="idDocument" accept=".jpg,.jpeg,.png,.pdf" />
+            <div class="upload-icon"><i class="bi bi-cloud-upload"></i></div>
+            <div class="upload-title">Click to upload or drag & drop your ID</div>
+            <p class="upload-hint">Accepted formats: JPG, PNG, PDF &nbsp;|&nbsp; Max file size: 5MB</p>
+            <p id="fileName" class="form-hint" style="margin-top:8px; color:var(--primary); font-weight:600;"></p>
+          </div>
+        </div>
+
+        <!-- --------------------------------------------------
+             SECTION 5 — TERMS & DECLARATION
+             -------------------------------------------------- -->
+        <div class="form-card">
+          <h5 class="section-title"><i class="bi bi-shield-check me-2"></i>Declaration & Agreement</h5>
+          <p class="section-subtitle">Please read and agree to the following before submitting your registration.</p>
+
+          <div class="d-flex flex-column gap-3">
+
+            <!-- Terms & Conditions -->
+            <div class="form-check terms-check">
+              <input class="form-check-input" type="checkbox" id="termsCheck" required />
+              <label class="form-check-label" for="termsCheck">
+                I have read and agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>.
+              </label>
+            </div>
+
+            <!-- Age Declaration -->
+            <div class="form-check terms-check">
+              <input class="form-check-input" type="checkbox" id="ageCheck" required />
+              <label class="form-check-label" for="ageCheck">
+                I declare that I am <strong>18 years of age or older</strong> and am eligible to vote.
+              </label>
+            </div>
+
+            <!-- Accuracy Declaration -->
+            <div class="form-check terms-check">
+              <input class="form-check-input" type="checkbox" id="accuracyCheck" required />
+              <label class="form-check-label" for="accuracyCheck">
+                I confirm that all information I have provided is <strong>accurate and truthful</strong>.
+                I understand that providing false information is a punishable offence.
+              </label>
+            </div>
+
+          </div>
+
+          <hr class="section-divider" />
+
+          <!-- ACTION BUTTONS -->
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <a href="index.html" class="btn-outline-custom">
+              <i class="bi bi-arrow-left"></i> Back to Home
+            </a>
+            <button type="submit" class="btn-primary-custom">
+              Submit Registration <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+
+        </div>
+
+      </form>
+      <!-- END OF FORM -->
+
+    </div>
+    <!-- END OF CONTAINER -->
+
+    <!-- ================================================
+         FOOTER
+         ================================================ -->
+    <footer class="page-footer">
+      &copy; 2025 <span>VoteSecure</span> Online Voting System &mdash; All rights reserved.
+    </footer>
+
+
+    <!-- ================================================
+         JAVASCRIPT
+         ================================================ -->
+    <script>
+
+      // ----------------------------------------------------
+      // 1. TOGGLE PASSWORD VISIBILITY
+      //    When user clicks the eye icon, switch between
+      //    showing and hiding the password.
+      // ----------------------------------------------------
+      function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.className = 'bi bi-eye-slash';   // change icon to "eye with slash"
+        } else {
+          input.type = 'password';
+          icon.className = 'bi bi-eye';          // change icon back to eye
+        }
+      }
+
+      // ----------------------------------------------------
+      // 2. PASSWORD STRENGTH METER
+      //    As the user types, calculate how strong the
+      //    password is and update the colored progress bar.
+      // ----------------------------------------------------
+      document.getElementById('password').addEventListener('input', function () {
+        const val = this.value;
+        const bar = document.getElementById('strengthBar');
+        const label = document.getElementById('strengthLabel');
+
+        let score = 0;
+        if (val.length >= 8)              score++;   // length check
+        if (/[A-Z]/.test(val))            score++;   // has uppercase letter
+        if (/[0-9]/.test(val))            score++;   // has a number
+        if (/[^A-Za-z0-9]/.test(val))     score++;   // has a symbol
+
+        // Map score to width, color, and label text
+        const levels = [
+          { width: '0%',   color: '',                text: '' },
+          { width: '25%',  color: '#dc3545',          text: 'Weak' },
+          { width: '50%',  color: '#fd7e14',          text: 'Fair' },
+          { width: '75%',  color: '#ffc107',          text: 'Good' },
+          { width: '100%', color: '#198754',          text: 'Strong' },
+        ];
+
+        bar.style.width      = levels[score].width;
+        bar.style.background = levels[score].color;
+        label.textContent    = levels[score].text ? `Strength: ${levels[score].text}` : '';
+        label.style.color    = levels[score].color;
+      });
+
+      // ----------------------------------------------------
+      // 3. FILE UPLOAD — Show the selected file name
+      //    When a user picks a file, display the file name
+      //    below the upload box so they know it was selected.
+      // ----------------------------------------------------
+      document.getElementById('idDocument').addEventListener('change', function () {
+        const fileNameEl = document.getElementById('fileName');
+        if (this.files.length > 0) {
+          fileNameEl.textContent = '✔ Selected: ' + this.files[0].name;
+        } else {
+          fileNameEl.textContent = '';
+        }
+      });
+
+      // ----------------------------------------------------
+      // 4. FORM VALIDATION ON SUBMIT
+      //    When the form is submitted:
+      //    - Check all required fields are filled
+      //    - Check passwords match
+      //    - Check all checkboxes are ticked
+      //    - If everything is valid, show success message
+      // ----------------------------------------------------
+      document.getElementById('registrationForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Stop the page from refreshing
+
+        let valid = true; // We'll track if everything passes
+
+        // --- Check required text/email/date inputs ---
+        const requiredInputs = this.querySelectorAll('input[required], select[required]');
+        requiredInputs.forEach(function (input) {
+          // Skip checkboxes — we handle those separately
+          if (input.type === 'checkbox') return;
+
+          if (!input.value.trim()) {
+            input.classList.add('is-invalid');
+            input.classList.remove('is-valid');
+            valid = false;
+          } else {
+            input.classList.remove('is-invalid');
+            input.classList.add('is-valid');
+          }
+        });
+
+        // --- Check passwords match ---
+        const pw1 = document.getElementById('password');
+        const pw2 = document.getElementById('confirmPassword');
+        if (pw1.value !== pw2.value) {
+          pw2.classList.add('is-invalid');
+          valid = false;
+        } else if (pw2.value) {
+          pw2.classList.remove('is-invalid');
+          pw2.classList.add('is-valid');
+        }
+
+        // --- Check checkboxes ---
+        const checkboxes = ['termsCheck', 'ageCheck', 'accuracyCheck'];
+        checkboxes.forEach(function (id) {
+          const checkbox = document.getElementById(id);
+          if (!checkbox.checked) {
+            checkbox.classList.add('is-invalid');
+            valid = false;
+          } else {
+            checkbox.classList.remove('is-invalid');
+          }
+        });
+
+        // --- Gender radio button check ---
+        const genderSelected = document.querySelector('input[name="gender"]:checked');
+        if (!genderSelected) {
+          valid = false;
+          // Highlight all gender labels red
+          document.querySelectorAll('.gender-option label').forEach(function (label) {
+            label.style.borderColor = 'var(--danger)';
+          });
+        } else {
+          document.querySelectorAll('.gender-option label').forEach(function (label) {
+            label.style.borderColor = '';
+          });
+        }
+
+        // --- If everything passes, show a success alert ---
+        if (valid) {
+          // Replace the form with a success message
+          const container = document.querySelector('.container');
+          container.innerHTML = `
+            <div style="
+              text-align: center;
+              background: #fff;
+              border-radius: 16px;
+              padding: 60px 40px;
+              box-shadow: 0 4px 28px rgba(26,60,110,0.09);
+              border: 1px solid var(--border);
+              margin-bottom: 32px;
+            ">
+              <div style="
+                width: 80px; height: 80px;
+                background: #e8f5e9;
+                border-radius: 50%;
+                display: flex; align-items: center; justify-content: center;
+                margin: 0 auto 20px;
+                font-size: 2.5rem; color: var(--success);
+              ">
+                <i class="bi bi-check-circle-fill"></i>
+              </div>
+              <h3 style="font-family:'Playfair Display',serif; color:var(--primary); margin-bottom:10px;">
+                Registration Submitted!
+              </h3>
+              <p style="color:var(--text-muted); max-width:420px; margin:0 auto 28px;">
+                Thank you for registering. We've sent a confirmation link to your email.
+                Please verify your email to complete your registration.
+              </p>
+              <a href="index.html" class="btn-primary-custom">
+                <i class="bi bi-house"></i> Back to Home
+              </a>
+            </div>
+          `;
+          // Scroll to top so they see the success message
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+
+    </script>
+
+    <!-- Bootstrap 5 JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+</html>
+```
