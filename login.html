@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Vote - Login</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom styles for focus rings and transitions */
+        .input-focus {
+            @apply focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all;
+        }
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #fff;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        [data-lucide] {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">
+
+    <!-- Header / Branding -->
+    <div class="sm:mx-auto sm:w-full sm:max-w-md mb-8">
+        <div class="flex justify-center">
+            <div class="bg-blue-600 p-3 rounded-2xl shadow-lg shadow-blue-200">
+                <i data-lucide="shield-check" class="text-white w-10 h-10"></i>
+            </div>
+        </div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-slate-900 tracking-tight">
+            Secure Vote Access
+        </h2>
+        <p class="mt-2 text-center text-sm text-slate-600">
+            Please verify your identity to cast your ballot.
+        </p>
+    </div>
+
+    <!-- Main Login Card -->
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow-xl shadow-slate-200/50 sm:rounded-2xl sm:px-10 border border-slate-100">
+            
+            <!-- Security Alert Banner -->
+            <div class="mb-6 flex items-start p-4 bg-amber-50 rounded-lg border border-amber-100">
+                <i data-lucide="alert-circle" class="text-amber-500 mt-0.5 flex-shrink-0"></i>
+                <p class="ml-3 text-xs text-amber-800 leading-relaxed">
+                    Ensure you are on <strong>secure-vote.gov</strong>. Never share your digital voter ID with anyone.
+                </p>
+            </div>
+
+            <form id="loginForm" class="space-y-6">
+                <!-- Email/ID Field -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-slate-700">
+                        Email Address or Voter ID
+                    </label>
+                    <div class="mt-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <i data-lucide="mail"></i>
+                        </div>
+                        <input
+                            id="email"
+                            name="email"
+                            type="text"
+                            required
+                            class="appearance-none block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-xl placeholder-slate-400 input-focus sm:text-sm"
+                            placeholder="name@example.com"
+                        >
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-slate-700">
+                        Security Password
+                    </label>
+                    <div class="mt-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <i data-lucide="lock"></i>
+                        </div>
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            required
+                            class="appearance-none block w-full pl-10 pr-10 py-3 border border-slate-300 rounded-xl placeholder-slate-400 input-focus sm:text-sm"
+                            placeholder="••••••••"
+                        >
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                        >
+                            <i data-lucide="eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember & Forgot -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input
+                            id="remember-me"
+                            type="checkbox"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-300 rounded"
+                        >
+                        <label for="remember-me" class="ml-2 block text-sm text-slate-700">
+                            Secure device
+                        </label>
+                    </div>
+
+                    <div class="text-sm">
+                        <a href="#" class="font-semibold text-blue-600 hover:text-blue-500">
+                            Lost access?
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    <button
+                        type="submit"
+                        id="submitBtn"
+                        class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all"
+                    >
+                        <span id="btnText" class="flex items-center">
+                            Sign In to Vote <i data-lucide="arrow-right" class="ml-2"></i>
+                        </span>
+                        <div id="btnSpinner" class="hidden spinner"></div>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Social / SSO Section -->
+            <div class="mt-8">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-slate-200"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-slate-500">Or authenticate via</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-2 gap-3">
+                    <button class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-slate-300 rounded-xl shadow-sm bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                        <i data-lucide="fingerprint" class="text-blue-500 mr-2"></i>
+                        <span>Biometric</span>
+                    </button>
+                    <button class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-slate-300 rounded-xl shadow-sm bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                        <i data-lucide="globe" class="text-emerald-500 mr-2"></i>
+                        <span>ID.me</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="mt-8 text-center text-sm text-slate-500">
+        <p>Don't have a digital voter ID? <a href="#" class="font-semibold text-blue-600 hover:underline">Register now</a></p>
+        <div class="mt-4 flex justify-center space-x-4 opacity-60">
+            <a href="#" class="hover:underline">Privacy Policy</a>
+            <span>•</span>
+            <a href="#" class="hover:underline">Election Integrity</a>
+            <span>•</span>
+            <a href="#" class="hover:underline">Contact Support</a>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Password visibility toggle
+        const passwordInput = document.getElementById('password');
+        const toggleBtn = document.getElementById('togglePassword');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        toggleBtn.addEventListener('click', () => {
+            const isPassword = passwordInput.getAttribute('type') === 'password';
+            passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+            
+            // Update icon
+            eyeIcon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+            lucide.createIcons();
+        });
+
+        // Form submission simulation
+        const loginForm = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // UI State: Loading
+            submitBtn.disabled = true;
+            btnText.classList.add('hidden');
+            btnSpinner.classList.remove('hidden');
+            submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            // Simulate API Call
+            setTimeout(() => {
+                // UI State: Reset (or redirect)
+                submitBtn.disabled = false;
+                btnText.classList.remove('hidden');
+                btnSpinner.classList.add('hidden');
+                submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                
+                // Demo notification
+                console.log('Login attempt with:', {
+                    email: document.getElementById('email').value
+                });
+                
+                // Optional: Show message box here instead of alert
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

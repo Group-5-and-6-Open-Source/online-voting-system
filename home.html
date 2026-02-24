@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Voting Web App Home</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d93f2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101b22",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden pb-24">
+<!-- Header Section -->
+<header class="sticky top-0 z-20 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 justify-between border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDqoeA815trW4ok1KHIjuOFvH5Q-njhHuq5zdtiE7yBIlOyWwu0cwwb2WeOUmniHcST6z7oFFWxI2oX9aZySI16i45zydpWGhFa6l3LfGGad2AtBwf9W5n4MwxAG4Ew8Lk4YEDVffp2wCHLpsfMxOD7DO-jlM_DJTaiPrxyhEc9Avvac5DYpfEUxhQzwdFJZi7AZVjSh9Y2Er-EQkfAj7Yb9fQ0s1pBfd9GK-MYelv3-pkyZbneMBm0xsBcBh1Q6Br-HaZovEypLVGS");'></div>
+</div>
+<div class="flex flex-col">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Welcome back</p>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight">Alex Rivera</h2>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="relative flex size-10 cursor-pointer items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">notifications</span>
+<span class="absolute top-2 right-2 flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary border-2 border-white dark:border-slate-800"></span>
+</span>
+</button>
+</div>
+</header>
+<!-- Summary Stats Carousel -->
+<section class="p-4">
+<div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
+<div class="flex min-w-[160px] flex-1 flex-col gap-2 rounded-xl p-5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">how_to_reg</span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal">Votes Cast</p>
+<p class="text-slate-900 dark:text-slate-100 text-2xl font-bold leading-tight">24</p>
+</div>
+</div>
+<div class="flex min-w-[160px] flex-1 flex-col gap-2 rounded-xl p-5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">event_available</span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal">Active Elections</p>
+<p class="text-slate-900 dark:text-slate-100 text-2xl font-bold leading-tight">3</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Deadlines / Alerts -->
+<section class="px-4 mb-6">
+<div class="flex flex-col gap-3 rounded-xl bg-primary/5 dark:bg-primary/10 p-4 border border-primary/20">
+<div class="flex items-center gap-2 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-lg">alarm</span>
+<span>Upcoming Deadline</span>
+</div>
+<div class="flex justify-between items-center">
+<p class="text-slate-800 dark:text-slate-200 text-sm font-medium">Board Election Closes in 4h</p>
+<a class="text-primary text-sm font-bold underline underline-offset-4" href="#">Vote Now</a>
+</div>
+</div>
+</section>
+<!-- Active Elections Title -->
+<div class="flex items-center justify-between px-4 pb-3">
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight">Active Elections</h2>
+<button class="text-primary text-sm font-bold">See All</button>
+</div>
+<!-- Vertical Feed of Elections -->
+<div class="flex flex-col px-4 gap-6">
+<!-- Election Card 1 -->
+<div class="flex flex-col overflow-hidden rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="relative w-full aspect-[21/9] bg-cover bg-center" data-alt="Modern corporate office lobby background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDdj7fbZUPsgDZg8Toi3nij0XJ2UcaU0u24YyvfYj4urtUUEN2P-LpWnQivLMkniYDP1g7Za7vKGxLoFkcbXTy2-7586tPH1QWtiu3yDm10R_qGvg_GRizK-gvW5Emv5omMPTBFkXs5C5Fkap5Ie9eWSklEv1YrG8L-UNnSzP8K689KctH7tzFpAj5Qug_jFE8YyQbrgZB3e_KUxqZJUL8bLvU1SYL65fDrzXLn2VOirgHZVwQ2_8snhf0r6yXi8LN8XhaIG9KWtR7g");'>
+<div class="absolute top-3 right-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest flex items-center gap-1">
+<span class="relative flex h-1.5 w-1.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+<span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
+</span>
+                        Ending Soon
+                    </div>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<div class="flex items-start justify-between gap-3">
+<div class="flex flex-col flex-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">Annual Board Election 2024</h3>
+<div class="flex items-center gap-2 mt-1">
+<div class="size-5 rounded bg-primary/10 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Corporate logo small" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwENxYNfmQ46PVwkqKGyKyfNKCO0GYS_78iLRhioLXdacDl4-08wjLumY9biHxpYbBrzRA4dod0DW4xN0tMQEtKVGERoiMz8SEWM9BsCt0e4axPxDmqczbmlGl3FND4lDY50VyczAfYIuVqhCBuFnftDmNfloWQ0fdYAO7nQm1av_ADEi9vsc3u30D1-piQqMKH8nEbwlN_BYoc9wT-A4iFVr1icnqogGOlgOp978lVIaUbbKsVnDfVuzTGMAVVLhY7UyiKvLQSRX4"/>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Global Corp Org</p>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0">
+<p class="text-primary text-xs font-bold uppercase tracking-tight">Closes In</p>
+<p class="text-slate-900 dark:text-slate-100 font-bold text-sm">03h : 42m</p>
+</div>
+</div>
+<button class="w-full py-3 bg-primary text-white rounded-lg font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-primary/20">
+                        Cast Your Vote
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Election Card 2 -->
+<div class="flex flex-col overflow-hidden rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="relative w-full aspect-[21/9] bg-cover bg-center" data-alt="Abstract cityscape architecture background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAjbK74z29wt_65SOERDTlGGh7hgsVodCkTRRx1tMROcAawqK3VDfv30UZSca6qqaCkU3DMsdfH5Ot4q59mnZRABosffmot1NnyxvnZ-_cJslImoue2faH_ZDOQuE5JXlkiIqgGm6Mc7s1L5jvcTG6kUiYrtqd2T77IUS40FolKQBdE_Y5AK-bS66olltDRJJiaFQKDiXU3fsS1s4vedeje0-BAz-U5EiOT0eWQ_PhaP1S30n7XXWyqaIg2o95DqTdXmD1H2pxeSwKc");'>
+<div class="absolute top-3 right-3 bg-slate-900/60 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest">
+                        New Proposal
+                    </div>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<div class="flex items-start justify-between gap-3">
+<div class="flex flex-col flex-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">City Transit Expansion Plan</h3>
+<div class="flex items-center gap-2 mt-1">
+<div class="size-5 rounded bg-primary/10 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="City council logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc9OU5UVQjD3G4e1GMIcN0x6kTPmcIKboYvbpqwV4SRJBR2wpnJEvKTftMN9RrZwf6gWLPdBvdZJsGlQAPdZJ_hL0gcCiVtBjFHBIa2C5ZkzFmceEmynGWJIm_P0ffrQIIyPgusH86IH2IOaQdf0IlETvn9Xe805rGY2lqDgFkgNgiTiLoci40w1EzWosKlhv5ccAC_hIcIigthsHizEKpMpQNtanw-4MSgFqAFeAXvJxz4n9on6YMFf97X4S4WiwSis0_m9GVe0N1"/>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Metro City Council</p>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-tight">Ends In</p>
+<p class="text-slate-900 dark:text-slate-100 font-bold text-sm">4 Days</p>
+</div>
+</div>
+<button class="w-full py-3 bg-primary/10 text-primary dark:bg-primary/20 rounded-lg font-bold text-sm flex items-center justify-center gap-2">
+                        View Details
+                    </button>
+</div>
+</div>
+<!-- Election Card 3 -->
+<div class="flex flex-col overflow-hidden rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm opacity-90">
+<div class="relative w-full aspect-[21/9] bg-cover bg-center grayscale-[0.5]" data-alt="Tech conference audience silhouettes background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCVif0YcmRc1R9s-L3I8PkgzC0rMJrYXTpUjfPmJ91MzaWhwcrZsLB_ml7zicxIgde0eHV2dyz7voSRrzIWUbt4gMCPjf_V-mVsOzJa5XpnKj9zlkGceveDXv-pTd2rAMVTHXb8_jASBNX9ymAL_yqcFZ2Vr_ylIRYa89Lzew0OGefqvPAppI8nkQDzt0K_IbWgsxqBr7a9AtA4qhUyFMY-R49obAg_jiRClckcRnODohgxQsrypEgiPYEQSFfjvgtsrzNw7Xv2GYNM");'>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<div class="flex items-start justify-between gap-3">
+<div class="flex flex-col flex-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">Innovation Speaker Selection</h3>
+<div class="flex items-center gap-2 mt-1">
+<div class="size-5 rounded bg-primary/10 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-primary text-[14px]">groups</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Tech Summit Hub</p>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-tight">Ends In</p>
+<p class="text-slate-900 dark:text-slate-100 font-bold text-sm">12 Days</p>
+</div>
+</div>
+<button class="w-full py-3 bg-primary/10 text-primary dark:bg-primary/20 rounded-lg font-bold text-sm flex items-center justify-center gap-2">
+                        View Details
+                    </button>
+</div>
+</div>
+</div>
+<!-- Recent Notifications / Deadlines Sidebar (Mobile Stack) -->
+<section class="p-4 mt-6">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold mb-4">Recent Activity</h3>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3 p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+<div class="size-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200">Ballot Confirmed</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Neighborhood Watch vote recorded.</p>
+</div>
+<p class="text-[10px] text-slate-400 font-medium">2h ago</p>
+</div>
+<div class="flex items-center gap-3 p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+<div class="size-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined">info</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200">Organization Invite</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">You were added to 'Investors Guild'.</p>
+</div>
+<p class="text-[10px] text-slate-400 font-medium">1d ago</p>
+</div>
+</div>
+</section>
+<!-- Bottom Tab Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex h-20 items-center justify-around bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg px-4 pb-4 border-t border-slate-200 dark:border-slate-800">
+<a class="flex flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="text-[10px] font-bold">Ballots</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-bold">Results</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">corporate_fare</span>
+<span class="text-[10px] font-bold">Orgs</span>
+</a>
+<a class="flex flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">Settings</span>
+</a>
+</nav>
+</div>
+</body></html>
